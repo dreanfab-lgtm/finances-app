@@ -9,53 +9,21 @@
 <meta name="apple-mobile-web-app-title" content="Finances">
 <title>Finances — Tableau de bord</title>
 <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230F1117'/><path d='M28 70V30h18c10 0 16 6 16 14 0 6-3 10-8 12l11 14H53l-9-12h-4v12H28zm12-22h6c3 0 5-2 5-5s-2-5-5-5h-6v10z' fill='%234F8EF7'/></svg>">
-<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230F1117'/><path d='M28 70V30h18c10 0 16 6 16 14 0 6-3 10-8 12l11 14H53l-9-12h-4v12H28zm12-22h6c3 0 5-2 5-5s-2-5-5-5h-6v10z' fill='%234F8EF7'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
-:root{--bg:#0F1117;--surface:#1C1F2E;--surface-2:#252938;--border:#2A2F42;--text:#E8EAF0;--text-dim:#8B92A8;--text-faint:#5C6379;--primary:#4F8EF7;--primary-dim:#3B6FC9;--success:#2ECC8A;--danger:#E8504A;--warning:#F5B342;--shadow:0 4px 20px rgba(0,0,0,0.3);--radius:12px;--radius-sm:8px}*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}input,select,textarea{font-family:inherit;font-size:14px}
-
-#app{display:grid;grid-template-columns:240px 1fr;height:100vh;height:100dvh}
-#sidebar{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 0;overflow-y:auto}
-.brand{padding:0 24px 28px;display:flex;align-items:center;gap:12px}.brand-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--primary),#7BA9FF);display:grid;place-items:center;font-weight:800;color:white;font-size:18px}.brand-name{font-weight:700;font-size:16px}.brand-sub{font-size:11px;color:var(--text-dim);text-transform:uppercase}
-.nav-section{padding:0 12px;flex:1}.nav-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);color:var(--text-dim);font-size:14px;font-weight:500;width:100%;text-align:left;transition:all 0.15s;border:none;background:none;cursor:pointer}.nav-item:hover{background:var(--surface-2);color:var(--text)}.nav-item.active{background:rgba(79,142,247,0.12);color:var(--primary)}
-.sidebar-footer{padding:12px 24px;border-top:1px solid var(--border);font-size:11px;color:var(--text-faint)}
-
-#main{overflow-y:auto;overflow-x:hidden;padding:32px 40px 100px;scroll-behavior:smooth}
-.view-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;gap:16px;flex-wrap:wrap}.view-title{font-size:24px;font-weight:700}.view-sub{color:var(--text-dim);font-size:13px;margin-top:4px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}.card-title{font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:12px}
-.btn{padding:9px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;border:1px solid transparent;cursor:pointer}.btn-primary{background:var(--primary);color:white}.btn-primary:hover{background:var(--primary-dim)}.btn-sm{padding:6px 10px;font-size:12px}
+:root{--bg:#0F1117;--surface:#1C1F2E;--surface-2:#252938;--border:#2A2F42;--text:#E8EAF0;--text-dim:#8B92A8;--text-faint:#5C6379;--primary:#4F8EF7;--primary-dim:#3B6FC9;--success:#2ECC8A;--danger:#E8504A;--warning:#F5B342}*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;overflow:hidden}button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}input,select,textarea{font-family:inherit;font-size:14px}
+#app{display:grid;grid-template-columns:240px 1fr;height:100vh}#sidebar{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 0;overflow-y:auto}.brand{padding:0 24px 28px;display:flex;align-items:center;gap:12px}.brand-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--primary),#7BA9FF);display:grid;place-items:center;font-weight:800;color:white;font-size:18px}.nav-section{padding:0 12px;flex:1}.nav-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:8px;color:var(--text-dim);font-size:14px;font-weight:500;width:100%;text-align:left;transition:all 0.15s;border:none;background:none;cursor:pointer}.nav-item:hover{background:var(--surface-2);color:var(--text)}.nav-item.active{background:rgba(79,142,247,0.12);color:var(--primary)}
+#main{overflow-y:auto;padding:32px 40px 100px;scroll-behavior:smooth}.view-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;gap:16px;flex-wrap:wrap}.view-title{font-size:24px;font-weight:700}.view-sub{color:var(--text-dim);font-size:13px;margin-top:4px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}.card-title{font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:12px}
+.btn{padding:9px 14px;border-radius:8px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;border:1px solid transparent;cursor:pointer}.btn-primary{background:var(--primary);color:white}.btn-primary:hover{background:var(--primary-dim)}.btn-sm{padding:6px 10px;font-size:12px}.btn-danger{background:rgba(232,80,74,0.12);color:var(--danger)}
 .input-group{margin-bottom:16px}.input-label{display:block;margin-bottom:8px;font-weight:600}.input-field{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);color:var(--text);font-size:13px}
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}.modal.active{display:flex}.modal-content{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto}
+.tx-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px}.tx-date{color:var(--text-dim);font-size:12px;min-width:70px}.tx-desc{flex:1;margin:0 12px}.tx-amount{font-weight:600;min-width:80px;text-align:right}.tx-amount.pos{color:var(--success)}.tx-amount.neg{color:var(--danger)}
 
-@media (max-width: 768px) {
-  #app{grid-template-columns:1fr}
-  #sidebar{position:fixed;left:0;top:0;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border);padding:16px;flex-direction:row;align-items:center;z-index:100;overflow-x:auto}
-  .brand{padding:0;flex-shrink:0}
-  .brand-name{font-size:14px}
-  .brand-sub{display:none}
-  .nav-section{display:flex;gap:8px;flex:1;padding:0;overflow-x:auto}
-  .nav-item{font-size:12px;padding:8px 10px;white-space:nowrap}
-  .sidebar-footer{display:none}
-  #main{padding:80px 20px 100px;margin-top:0}
-  .view-header{flex-direction:column;align-items:flex-start}
-  .view-title{font-size:20px}
-  .card{padding:16px}
-  .input-field{font-size:16px}
-}
-
-@media (max-width: 480px) {
-  #sidebar{padding:12px}
-  .brand-icon{width:28px;height:28px;font-size:14px}
-  .brand-name{font-size:12px}
-  .nav-item{font-size:11px;padding:6px 8px}
-  #main{padding:70px 16px 100px}
-  .view-title{font-size:18px}
-  .card{padding:12px}
-  .btn{padding:8px 12px;font-size:12px}
-}
+@media (max-width:768px){#app{grid-template-columns:1fr}#sidebar{position:fixed;left:0;top:0;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border);padding:16px;flex-direction:row;z-index:100;overflow-x:auto}.brand{padding:0;flex-shrink:0}.nav-section{display:flex;gap:8px;flex:1;overflow-x:auto}.nav-item{font-size:12px;padding:8px 10px;white-space:nowrap}#main{padding:80px 20px 100px;margin-top:0}}
 </style>
 </head>
 <body>
@@ -63,31 +31,68 @@
   <div id="sidebar">
     <div class="brand">
       <div class="brand-icon">₣</div>
-      <div>
-        <div class="brand-name">Finances</div>
-        <div class="brand-sub">FAB • 2026</div>
-      </div>
+      <div style="font-weight:700">Finances</div>
     </div>
     <div class="nav-section">
       <button class="nav-item active" onclick="go('dashboard')">📊 Vue</button>
       <button class="nav-item" onclick="go('transactions')">💳 TX</button>
       <button class="nav-item" onclick="go('patrimoine')">🏠 Pat</button>
       <button class="nav-item" onclick="go('plan')">📋 Plan</button>
-      <button class="nav-item" onclick="go('objectifs')">🎯 Obj</button>
       <button class="nav-item" onclick="go('settings')">⚙️ Param</button>
     </div>
-    <div class="sidebar-footer">100% local</div>
   </div>
   <div id="main">
     <div id="view"></div>
   </div>
 </div>
 
+<div id="txModal" class="modal">
+  <div class="modal-content">
+    <div style="font-size:18px;font-weight:700;margin-bottom:16px">Ajouter une transaction</div>
+    <div class="input-group">
+      <label class="input-label">Date</label>
+      <input type="date" id="txDate" class="input-field">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Description</label>
+      <input type="text" id="txDesc" class="input-field" placeholder="Ex: Salaire, Course...">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Montant (€)</label>
+      <input type="number" id="txAmount" class="input-field" placeholder="0.00" step="0.01">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Compte</label>
+      <select id="txAccount" class="input-field">
+        <option value="acc_bnp">BNP Courant</option>
+        <option value="acc_bourso">BoursoBank</option>
+        <option value="acc_liv">Livret A</option>
+        <option value="acc_card">CARDIF Élite</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Type</label>
+      <select id="txType" class="input-field">
+        <option value="expense">Dépense (-)</option>
+        <option value="income">Revenu (+)</option>
+        <option value="transfer">Transfert</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary" onclick="saveTx()">Enregistrer</button>
+      <button class="btn" onclick="closeModal()" style="background:var(--surface-2)">Annuler</button>
+    </div>
+  </div>
+</div>
+
 <script>
+const DB_NAME = 'finances_v2';
+const STORES = ['transactions', 'accounts', 'categories', 'goals'];
 const state = {
   currentView: 'dashboard',
   backendUrl: localStorage.getItem('finances_backend_url') || '',
   userId: localStorage.getItem('finances_user_id') || generateUUID(),
+  transactions: [],
   accounts: [
     {id: 'acc_bnp', name: 'BNP Courant', solde: 1410.04},
     {id: 'acc_bourso', name: 'BoursoBank', solde: 1178.60},
@@ -113,6 +118,57 @@ function formatCurrency(n) {
   return new Intl.NumberFormat('fr-FR', {style: 'currency', currency: 'EUR'}).format(n);
 }
 
+async function initDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onerror = () => reject(req.error);
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      for (const store of STORES) {
+        if (!db.objectStoreNames.contains(store)) {
+          db.createObjectStore(store, {keyPath: 'id'});
+        }
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+  });
+}
+
+async function dbPut(store, obj) {
+  const db = await initDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).put(obj);
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => resolve(req.result);
+  });
+}
+
+async function dbGetAll(store) {
+  const db = await initDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, 'readonly');
+    const req = tx.objectStore(store).getAll();
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => resolve(req.result);
+  });
+}
+
+async function dbDelete(store, id) {
+  const db = await initDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).delete(id);
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => resolve(req.result);
+  });
+}
+
+async function loadTransactions() {
+  state.transactions = await dbGetAll('transactions');
+  state.transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
 function go(view) {
   state.currentView = view;
   updateNav();
@@ -120,164 +176,126 @@ function go(view) {
 }
 
 function updateNav() {
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.classList.remove('active');
-  });
-  const buttons = document.querySelectorAll('.nav-item');
-  const viewMap = {'dashboard': 0, 'transactions': 1, 'patrimoine': 2, 'plan': 3, 'objectifs': 4, 'settings': 5};
-  if (buttons[viewMap[state.currentView]]) {
-    buttons[viewMap[state.currentView]].classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+  const views = ['dashboard', 'transactions', 'patrimoine', 'plan', 'settings'];
+  const idx = views.indexOf(view);
+  if (idx !== -1) {
+    document.querySelectorAll('.nav-item')[idx].classList.add('active');
   }
 }
 
-function renderView() {
-  const viewEl = document.getElementById('view');
-  
+async function renderView() {
   if (state.currentView === 'dashboard') {
     renderDashboard();
   } else if (state.currentView === 'transactions') {
-    renderTransactions();
+    await renderTransactions();
   } else if (state.currentView === 'patrimoine') {
     renderPatrimoine();
   } else if (state.currentView === 'plan') {
     renderPlan();
-  } else if (state.currentView === 'objectifs') {
-    renderObjectifs();
   } else if (state.currentView === 'settings') {
     renderSettings();
   }
 }
 
 function renderDashboard() {
-  const viewEl = document.getElementById("view");
+  const viewEl = document.getElementById('view');
   const totalSoldes = state.accounts.reduce((sum, a) => sum + a.solde, 0);
-  const html = `
+  const thisMonthTx = state.transactions.filter(t => {
+    const d = new Date(t.date);
+    return d.getMonth() === new Date().getMonth() && d.getFullYear() === new Date().getFullYear();
+  });
+  const income = thisMonthTx.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
+  const expenses = thisMonthTx.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+
+  viewEl.innerHTML = `
     <div class="view-header">
-      <div>
-        <div class="view-title">Vue d'ensemble</div>
-        <div class="view-sub">Tableau de bord</div>
-      </div>
+      <div><div class="view-title">Vue d'ensemble</div><div class="view-sub">Tableau de bord</div></div>
+      <button class="btn btn-primary" onclick="openModal()">+ Transaction</button>
     </div>
     <div class="card">
-      <div class="card-title">Soldes actuels</div>
-      <div style="padding:16px 0">
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
-          ${state.accounts.map(a => `
-            <div>
-              <div style="color:var(--text-dim);font-size:11px">${a.name}</div>
-              <div style="font-size:16px;font-weight:700;margin-top:4px">${formatCurrency(a.solde)}</div>
-            </div>
-          `).join('')}
-        </div>
+      <div class="card-title">Soldes</div>
+      <div style="padding:16px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
+        ${state.accounts.map(a => `<div><div style="color:var(--text-dim);font-size:11px">${a.name}</div><div style="font-size:16px;font-weight:700;margin-top:4px">${formatCurrency(a.solde)}</div></div>`).join('')}
       </div>
     </div>
     <div class="card">
       <div class="card-title">Total patrimoine</div>
       <div style="font-size:24px;font-weight:700;color:var(--success)">${formatCurrency(totalSoldes)}</div>
     </div>
-  `;
-  viewEl.innerHTML = html;
-}
-
-function renderTransactions() {
-  const viewEl = document.getElementById("view");
-  const html = `
-    <div class="view-header">
-      <div class="view-title">Transactions</div>
-      <div class="view-sub">Gestion des mouvements</div>
-    </div>
     <div class="card">
-      <p>Les transactions seront bientôt disponibles</p>
-    </div>
-  `;
-  viewEl.innerHTML = html;
-}
-
-function renderPatrimoine() {
-  const viewEl = document.getElementById("view");
-  const html = `
-    <div class="view-header">
-      <div class="view-title">Patrimoine</div>
-      <div class="view-sub">Vue d'ensemble</div>
-    </div>
-    <div class="card">
-      <div class="card-title">Comptes et actifs</div>
+      <div class="card-title">Ce mois</div>
       <div style="padding:12px 0">
-        ${state.accounts.map(a => `
-          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px">
-            <span>${a.name}</span>
-            <span style="font-weight:600">${formatCurrency(a.solde)}</span>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+          <span>Revenus</span>
+          <span style="color:var(--success);font-weight:600">+${formatCurrency(income)}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between">
+          <span>Dépenses</span>
+          <span style="color:var(--danger);font-weight:600">-${formatCurrency(expenses)}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+async function renderTransactions() {
+  const viewEl = document.getElementById('view');
+  await loadTransactions();
+  
+  viewEl.innerHTML = `
+    <div class="view-header">
+      <div><div class="view-title">Transactions</div><div class="view-sub">Historique</div></div>
+      <button class="btn btn-primary" onclick="openModal()">+ Ajouter</button>
+    </div>
+    <div class="card">
+      <div class="card-title">Dernières transactions</div>
+      <div style="padding:12px 0">
+        ${state.transactions.length === 0 ? '<div style="color:var(--text-dim)">Aucune transaction</div>' : state.transactions.slice(0, 20).map(t => `
+          <div class="tx-row">
+            <div class="tx-date">${t.date}</div>
+            <div class="tx-desc">${t.description}</div>
+            <div class="tx-amount ${t.type === 'income' ? 'pos' : 'neg'}">${(t.type === 'income' ? '+' : '-')}${formatCurrency(Math.abs(t.amount))}</div>
+            <button class="btn btn-sm btn-danger" onclick="deleteTx('${t.id}')" style="margin-left:8px">✕</button>
           </div>
         `).join('')}
       </div>
     </div>
   `;
-  viewEl.innerHTML = html;
+}
+
+function renderPatrimoine() {
+  const viewEl = document.getElementById('view');
+  viewEl.innerHTML = `
+    <div class="view-header"><div class="view-title">Patrimoine</div></div>
+    <div class="card">
+      <div class="card-title">Comptes et actifs</div>
+      <div style="padding:12px 0">
+        ${state.accounts.map(a => `<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px"><span>${a.name}</span><span style="font-weight:600">${formatCurrency(a.solde)}</span></div>`).join('')}
+      </div>
+    </div>
+  `;
 }
 
 function renderPlan() {
-  const viewEl = document.getElementById("view");
-  const html = `
-    <div class="view-header">
-      <div class="view-title">Plan d'action</div>
-      <div class="view-sub">Stratégie 2026-2028</div>
-    </div>
+  const viewEl = document.getElementById('view');
+  viewEl.innerHTML = `
+    <div class="view-header"><div class="view-title">Plan d'action</div></div>
     <div class="card">
       <div class="card-title">Phases</div>
       <div style="padding:12px 0;font-size:14px">
-        <div style="margin-bottom:16px">
-          <div style="font-weight:600;margin-bottom:4px">Phase 1 : Alternance</div>
-          <div style="color:var(--text-dim);font-size:12px">Juillet-septembre 2026</div>
-        </div>
-        <div style="margin-bottom:16px">
-          <div style="font-weight:600;margin-bottom:4px">Phase 2 : ARE + AFPA</div>
-          <div style="color:var(--text-dim);font-size:12px">Octobre 2026 - Mars 2028</div>
-        </div>
-        <div>
-          <div style="font-weight:600;margin-bottom:4px">Phase 3 : Auto-entrepreneur</div>
-          <div style="color:var(--text-dim);font-size:12px">Mars 2028+</div>
-        </div>
+        <div style="margin-bottom:16px"><div style="font-weight:600">Phase 1 : Alternance</div><div style="color:var(--text-dim);font-size:12px">Juillet-septembre 2026</div></div>
+        <div style="margin-bottom:16px"><div style="font-weight:600">Phase 2 : ARE + AFPA</div><div style="color:var(--text-dim);font-size:12px">Octobre 2026 - Mars 2028</div></div>
+        <div><div style="font-weight:600">Phase 3 : Auto-entrepreneur</div><div style="color:var(--text-dim);font-size:12px">Mars 2028+</div></div>
       </div>
     </div>
   `;
-  viewEl.innerHTML = html;
-}
-
-function renderObjectifs() {
-  const viewEl = document.getElementById("view");
-  const html = `
-    <div class="view-header">
-      <div class="view-title">Objectifs</div>
-      <div class="view-sub">Cibles financières</div>
-    </div>
-    <div class="card">
-      <div class="card-title">Objectifs</div>
-      <div style="padding:12px 0;font-size:14px">
-        <div style="margin-bottom:12px;padding:10px;background:var(--surface-2);border-radius:8px">
-          <div style="font-weight:600;font-size:13px">Coussin Livret A</div>
-          <div style="color:var(--text-dim);font-size:12px">Cible: 3 000€ | Actuel: ${formatCurrency(14.38)}</div>
-        </div>
-        <div style="margin-bottom:12px;padding:10px;background:var(--surface-2);border-radius:8px">
-          <div style="font-weight:600;font-size:13px">Reconstitution Bourso</div>
-          <div style="color:var(--text-dim);font-size:12px">Actuel: ${formatCurrency(1178.60)}</div>
-        </div>
-        <div style="padding:10px;background:var(--surface-2);border-radius:8px">
-          <div style="font-weight:600;font-size:13px">Préparation AE</div>
-          <div style="color:var(--text-dim);font-size:12px">Accumulation graduelle</div>
-        </div>
-      </div>
-    </div>
-  `;
-  viewEl.innerHTML = html;
 }
 
 function renderSettings() {
-  const viewEl = document.getElementById("view");
-  const html = `
-    <div class="view-header">
-      <div class="view-title">Paramètres</div>
-      <div class="view-sub">Configuration</div>
-    </div>
+  const viewEl = document.getElementById('view');
+  viewEl.innerHTML = `
+    <div class="view-header"><div class="view-title">Paramètres</div></div>
     <div class="card">
       <div class="card-title">Backend & Synchronisation</div>
       <div style="padding:12px 0">
@@ -293,13 +311,73 @@ function renderSettings() {
     </div>
     <div class="card">
       <div class="card-title">Informations</div>
-      <div style="padding:12px 0;font-size:12px;color:var(--text-dim);word-break:break-all">
-        <div style="margin-bottom:8px"><strong>User:</strong> ${state.userId}</div>
+      <div style="padding:12px 0;font-size:12px;color:var(--text-dim)">
+        <div style="margin-bottom:8px;word-break:break-all"><strong>User ID:</strong> ${state.userId}</div>
         <div><strong>Backend:</strong> ${state.backendUrl || '(non configuré)'}</div>
       </div>
     </div>
   `;
-  viewEl.innerHTML = html;
+}
+
+function openModal() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('txDate').value = today;
+  document.getElementById('txDesc').value = '';
+  document.getElementById('txAmount').value = '';
+  document.getElementById('txAccount').value = 'acc_bnp';
+  document.getElementById('txType').value = 'expense';
+  document.getElementById('txModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('txModal').classList.remove('active');
+}
+
+async function saveTx() {
+  const date = document.getElementById('txDate').value;
+  const desc = document.getElementById('txDesc').value;
+  const amount = parseFloat(document.getElementById('txAmount').value);
+  const account = document.getElementById('txAccount').value;
+  const type = document.getElementById('txType').value;
+
+  if (!date || !desc || !amount) {
+    alert('Remplis tous les champs');
+    return;
+  }
+
+  const tx = {
+    id: 'tx_' + Date.now(),
+    date,
+    description: desc,
+    amount,
+    account,
+    type,
+    createdAt: new Date().toISOString()
+  };
+
+  await dbPut('transactions', tx);
+  
+  // Mettre à jour le solde
+  const acc = state.accounts.find(a => a.id === account);
+  if (acc) {
+    if (type === 'income' || type === 'transfer') {
+      acc.solde += amount;
+    } else {
+      acc.solde -= amount;
+    }
+    await dbPut('accounts', acc);
+  }
+
+  closeModal();
+  await renderTransactions();
+  alert('✓ Transaction enregistrée');
+}
+
+async function deleteTx(txId) {
+  if (!confirm('Supprimer cette transaction ?')) return;
+  await dbDelete('transactions', txId);
+  await loadTransactions();
+  await renderView();
 }
 
 function saveBackendUrl() {
@@ -323,10 +401,15 @@ async function testBackendConnection() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+  await loadTransactions();
   go('dashboard');
   console.log('✓ App chargée');
 });
+
+document.getElementById('txModal').onclick = (e) => {
+  if (e.target === document.getElementById('txModal')) closeModal();
+};
 </script>
 
 </body>
