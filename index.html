@@ -169,13 +169,53 @@ async function loadTransactions() {
   state.transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
+async function syncFromBackend() {
+  if (!state.backendUrl) {
+    console.log('Backend non configuré, chargement local');
+    return;
+  }
+  try {
+    console.log('Synchro depuis backend...');
+    const res = await fetch(state.backendUrl + '/api/sync/' + state.userId);
+    if (!res.ok) throw new Error('Erreur ' + res.status);
+    const data = await res.json();
+    
+    if (data.transactions && data.transactions.length > 0) {
+      for (const tx of data.transactions) {
+        await dbPut('transactions', {
+          id: tx.id,
+          date: tx.date,
+          description: tx.note || 'Transaction',
+          amount: parseFloat(tx.amount),
+          account: tx.accountId,
+          type: tx.type,
+          createdAt: tx.created_at
+        });
+      }
+      console.log('✓ ' + data.transactions.length + ' transactions synchro');
+    }
+  } catch (err) {
+    console.log('Synchro échouée:', err.message);
+  }
+}
+
 async function syncToBackend(tx) {
   if (!state.backendUrl) return;
   try {
     await fetch(state.backendUrl + '/api/transaction', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({...tx, userId: state.userId})
+      body: JSON.stringify({
+        userId: state.userId,
+        transaction: {
+          id: tx.id,
+          date: tx.date,
+          amount: tx.amount,
+          type: tx.type,
+          accountId: tx.account,
+          note: tx.description
+        }
+      })
     });
     console.log('✓ Synchro backend OK');
   } catch (err) {
@@ -271,7 +311,7 @@ async function renderTransactions() {
   
   viewEl.innerHTML = `
     <div class="view-header">
-      <div><div class="view-title">Transactions</div><div class="view-sub">Historique</div></div>
+      <div><div class="view-title">Transactions</div><div class="view-sub">Historique (${state.transactions.length})</div></div>
       <button class="btn btn-primary" onclick="openModal()">+ Ajouter</button>
     </div>
     <div class="card">
@@ -286,7 +326,7 @@ async function renderTransactions() {
           </div>
         `).join('')}
       </div>
-      <div class="sync-status">🔄 Synchro automatique ${state.backendUrl ? 'activée' : 'désactivée'}</div>
+      <div class="sync-status">🔄 Synchro ${state.backendUrl ? '✓ active' : '✗ désactivée'}</div>
     </div>
   `;
 }
@@ -333,6 +373,7 @@ function renderSettings() {
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-primary btn-sm" onclick="saveBackendUrl()">Enregistrer</button>
           <button class="btn btn-primary btn-sm" onclick="testBackendConnection()">Tester</button>
+          <button class="btn btn-primary btn-sm" onclick="syncFromBackendNow()">Recharger</button>
         </div>
       </div>
     </div>
@@ -397,7 +438,7 @@ async function saveTx() {
 
   closeModal();
   await renderTransactions();
-  alert('✓ Transaction enregistrée et synchronisée');
+  alert('✓ Synchro réussie');
 }
 
 async function deleteTx(txId) {
@@ -423,16 +464,24 @@ async function testBackendConnection() {
   try {
     const res = await fetch(state.backendUrl + '/health');
     const data = await res.json();
-    alert('✓ Connexion réussie!\n' + JSON.stringify(data, null, 2));
+    alert('✓ Connexion réussie!');
   } catch (err) {
     alert('✗ Erreur:\n' + err.message);
   }
 }
 
+async function syncFromBackendNow() {
+  await syncFromBackend();
+  await loadTransactions();
+  await renderView();
+  alert('✓ Données rechargées du backend');
+}
+
 document.addEventListener('DOMContentLoaded', async function() {
+  await syncFromBackend();
   await loadTransactions();
   go('dashboard');
-  console.log('✓ App chargée avec synchro');
+  console.log('✓ App chargée avec synchro complète');
 });
 
 document.getElementById('txModal').onclick = (e) => {
