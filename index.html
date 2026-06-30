@@ -15,8 +15,8 @@
 <style>
 :root{--bg:#0F1117;--surface:#1C1F2E;--surface-2:#252938;--border:#2A2F42;--text:#E8EAF0;--text-dim:#8B92A8;--text-faint:#5C6379;--primary:#4F8EF7;--primary-dim:#3B6FC9;--success:#2ECC8A;--danger:#E8504A;--warning:#F5B342}*{box-sizing:border-box;margin:0;padding:0}html,body{height:100vh;background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;overflow:hidden}button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}input,select,textarea{font-family:inherit;font-size:14px}
 #app{display:flex;flex-direction:column;height:100vh}#header{padding:16px 20px;border-bottom:1px solid var(--border);background:var(--surface)}.header-title{font-size:20px;font-weight:700}
-#main{flex:1;overflow-y:auto;padding:20px 20px 80px}
-#nav{position:fixed;bottom:0;left:0;right:0;height:70px;background:var(--surface);border-top:1px solid var(--border);display:flex;gap:0;padding:0;z-index:100;padding-bottom:env(safe-area-inset-bottom)}.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11px;color:var(--text-dim);border:none;background:none;cursor:pointer;transition:all 0.15s;padding:8px 0}.nav-btn.active{color:var(--primary)}.nav-btn span{font-size:18px}
+#main{flex:1;overflow-y:auto;padding:20px 20px 100px}
+#nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;gap:0;padding:8px 0 env(safe-area-inset-bottom);z-index:100}.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:11px;color:var(--text-dim);border:none;background:none;cursor:pointer;transition:all 0.15s;padding:8px 0}.nav-btn.active{color:var(--primary)}.nav-btn span{font-size:20px}
 .view{display:none}.view.active{display:block}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}.card-title{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:8px}
 .btn{padding:8px 12px;border-radius:8px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;border:1px solid transparent;cursor:pointer}.btn-primary{background:var(--primary);color:white}.btn-primary:hover{background:var(--primary-dim)}.btn-sm{padding:6px 10px;font-size:12px}.btn-danger{background:rgba(232,80,74,0.12);color:var(--danger)}
@@ -172,6 +172,21 @@ async function loadTransactions() {
   state.transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
+async function registerUserWithBackend() {
+  if (!state.backendUrl) return;
+  try {
+    const url = state.backendUrl.endsWith('/') ? state.backendUrl : state.backendUrl + '/';
+    const res = await fetch(url + 'api/user', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({userId: state.userId})
+    });
+    console.log('✓ Utilisateur créé sur backend');
+  } catch (err) {
+    console.log('Erreur création utilisateur:', err.message);
+  }
+}
+
 async function syncFromBackend() {
   if (!state.backendUrl) return;
   try {
@@ -213,7 +228,7 @@ async function syncToBackend(tx) {
   if (!state.backendUrl) return;
   try {
     const url = state.backendUrl.endsWith('/') ? state.backendUrl : state.backendUrl + '/';
-    await fetch(url + 'api/transaction', {
+    const res = await fetch(url + 'api/transaction', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -228,7 +243,11 @@ async function syncToBackend(tx) {
         }
       })
     });
-    console.log('✓ TX envoyée au backend');
+    if (res.ok) {
+      console.log('✓ TX envoyée au backend');
+    } else {
+      console.log('✗ Erreur envoi TX:', res.status);
+    }
   } catch (err) {
     console.log('Erreur upload TX:', err.message);
   }
@@ -391,7 +410,8 @@ function saveBackendUrl() {
   const url = document.getElementById('backendUrl').value;
   state.backendUrl = url;
   localStorage.setItem('finances_backend_url', url);
-  alert('✓ URL enregistrée');
+  registerUserWithBackend();
+  alert('✓ URL enregistrée et utilisateur créé');
 }
 
 async function testBackendConnection() {
@@ -414,10 +434,11 @@ async function testBackendConnection() {
 
 document.addEventListener('DOMContentLoaded', async function() {
   await loadTransactions();
+  await registerUserWithBackend();
   await syncFromBackend();
   setInterval(syncFromBackend, 30000);
   renderView();
-  console.log('✓ App mobile chargée');
+  console.log('✓ App lancée avec synchro');
 });
 
 document.addEventListener('visibilitychange', function() {
