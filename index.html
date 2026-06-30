@@ -7,48 +7,50 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Finances">
-<title>Finances — Tableau de bord</title>
+<title>Finances</title>
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
-:root{--bg:#0F1117;--surface:#1C1F2E;--surface-2:#252938;--border:#2A2F42;--text:#E8EAF0;--text-dim:#8B92A8;--text-faint:#5C6379;--primary:#4F8EF7;--primary-dim:#3B6FC9;--success:#2ECC8A;--danger:#E8504A;--warning:#F5B342}*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;overflow:hidden}button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}input,select,textarea{font-family:inherit;font-size:14px}
-#app{display:grid;grid-template-columns:240px 1fr;height:100vh}#sidebar{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 0;overflow-y:auto}.brand{padding:0 24px 28px;display:flex;align-items:center;gap:12px}.brand-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--primary),#7BA9FF);display:grid;place-items:center;font-weight:800;color:white;font-size:18px}.nav-section{padding:0 12px;flex:1}.nav-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:8px;color:var(--text-dim);font-size:14px;font-weight:500;width:100%;text-align:left;transition:all 0.15s;border:none;background:none;cursor:pointer}.nav-item:hover{background:var(--surface-2);color:var(--text)}.nav-item.active{background:rgba(79,142,247,0.12);color:var(--primary)}
-#main{overflow-y:auto;padding:32px 40px 100px;scroll-behavior:smooth}.view-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;gap:16px;flex-wrap:wrap}.view-title{font-size:24px;font-weight:700}.view-sub{color:var(--text-dim);font-size:13px;margin-top:4px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}.card-title{font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:12px}
-.btn{padding:9px 14px;border-radius:8px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;border:1px solid transparent;cursor:pointer}.btn-primary{background:var(--primary);color:white}.btn-primary:hover{background:var(--primary-dim)}.btn-sm{padding:6px 10px;font-size:12px}.btn-danger{background:rgba(232,80,74,0.12);color:var(--danger)}
-.input-group{margin-bottom:16px}.input-label{display:block;margin-bottom:8px;font-weight:600}.input-field{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);color:var(--text);font-size:13px}
-.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}.modal.active{display:flex}.modal-content{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto}
-.tx-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px}.tx-date{color:var(--text-dim);font-size:12px;min-width:70px}.tx-desc{flex:1;margin:0 12px}.tx-amount{font-weight:600;min-width:80px;text-align:right}.tx-amount.pos{color:var(--success)}.tx-amount.neg{color:var(--danger)}.sync-status{font-size:11px;color:var(--text-dim);margin-top:8px}
-
-@media (max-width:768px){#app{grid-template-columns:1fr}#sidebar{position:fixed;left:0;top:0;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border);padding:16px;flex-direction:row;z-index:100;overflow-x:auto}.brand{padding:0;flex-shrink:0}.nav-section{display:flex;gap:8px;flex:1;overflow-x:auto}.nav-item{font-size:12px;padding:8px 10px;white-space:nowrap}#main{padding:80px 20px 100px;margin-top:0}}
+:root{--bg:#0F1117;--surface:#1C1F2E;--surface-2:#252938;--border:#2A2F42;--text:#E8EAF0;--text-dim:#8B92A8;--text-faint:#5C6379;--primary:#4F8EF7;--primary-dim:#3B6FC9;--success:#2ECC8A;--danger:#E8504A;--warning:#F5B342}*{box-sizing:border-box;margin:0;padding:0}html,body{height:100vh;background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;overflow:hidden}button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}input,select,textarea{font-family:inherit;font-size:14px}
+#app{display:flex;flex-direction:column;height:100vh}#header{padding:16px 20px;border-bottom:1px solid var(--border);background:var(--surface)}.header-title{font-size:20px;font-weight:700}
+#main{flex:1;overflow-y:auto;padding:20px 20px 80px}
+#nav{position:fixed;bottom:0;left:0;right:0;height:70px;background:var(--surface);border-top:1px solid var(--border);display:flex;gap:0;padding:0;z-index:100;padding-bottom:env(safe-area-inset-bottom)}.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11px;color:var(--text-dim);border:none;background:none;cursor:pointer;transition:all 0.15s;padding:8px 0}.nav-btn.active{color:var(--primary)}.nav-btn span{font-size:18px}
+.view{display:none}.view.active{display:block}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}.card-title{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:8px}
+.btn{padding:8px 12px;border-radius:8px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;border:1px solid transparent;cursor:pointer}.btn-primary{background:var(--primary);color:white}.btn-primary:hover{background:var(--primary-dim)}.btn-sm{padding:6px 10px;font-size:12px}.btn-danger{background:rgba(232,80,74,0.12);color:var(--danger)}
+.input-group{margin-bottom:12px}.input-label{display:block;margin-bottom:6px;font-weight:600;font-size:13px}.input-field{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);color:var(--text);font-size:13px}
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;padding:20px}.modal.active{display:flex}.modal-content{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto}
+.tx-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}.tx-date{color:var(--text-dim);font-size:11px;min-width:60px}.tx-desc{flex:1;margin:0 8px;font-size:12px}.tx-amount{font-weight:600;min-width:70px;text-align:right;font-size:12px}.tx-amount.pos{color:var(--success)}.tx-amount.neg{color:var(--danger)}.sync-badge{display:inline-block;font-size:10px;padding:4px 8px;border-radius:4px;background:rgba(46,204,138,0.12);color:var(--success);margin-top:8px}
 </style>
 </head>
 <body>
 <div id="app">
-  <div id="sidebar">
-    <div class="brand">
-      <div class="brand-icon">₣</div>
-      <div style="font-weight:700">Finances</div>
-    </div>
-    <div class="nav-section">
-      <button class="nav-item active" onclick="go('dashboard')">📊 Vue</button>
-      <button class="nav-item" onclick="go('transactions')">💳 TX</button>
-      <button class="nav-item" onclick="go('patrimoine')">🏠 Pat</button>
-      <button class="nav-item" onclick="go('plan')">📋 Plan</button>
-      <button class="nav-item" onclick="go('settings')">⚙️ Param</button>
-    </div>
+  <div id="header">
+    <div class="header-title">Finances</div>
   </div>
+  
   <div id="main">
-    <div id="view"></div>
+    <div id="dashboard" class="view active"></div>
+    <div id="transactions" class="view"></div>
+    <div id="patrimoine" class="view"></div>
+    <div id="plan" class="view"></div>
+    <div id="settings" class="view"></div>
+  </div>
+
+  <div id="nav">
+    <button class="nav-btn active" onclick="goTo('dashboard')"><span>📊</span>Vue</button>
+    <button class="nav-btn" onclick="goTo('transactions')"><span>💳</span>TX</button>
+    <button class="nav-btn" onclick="goTo('patrimoine')"><span>🏠</span>Pat</button>
+    <button class="nav-btn" onclick="goTo('plan')"><span>📋</span>Plan</button>
+    <button class="nav-btn" onclick="goTo('settings')"><span>⚙️</span>Param</button>
   </div>
 </div>
 
 <div id="txModal" class="modal">
   <div class="modal-content">
-    <div style="font-size:18px;font-weight:700;margin-bottom:16px">Ajouter une transaction</div>
+    <div style="font-size:16px;font-weight:700;margin-bottom:12px">Ajouter une transaction</div>
     <div class="input-group">
       <label class="input-label">Date</label>
       <input type="date" id="txDate" class="input-field">
@@ -78,7 +80,7 @@
         <option value="transfer">Transfert</option>
       </select>
     </div>
-    <div style="display:flex;gap:8px">
+    <div style="display:flex;gap:8px;margin-top:16px">
       <button class="btn btn-primary" onclick="saveTx()">Enregistrer</button>
       <button class="btn" onclick="closeModal()" style="background:var(--surface-2)">Annuler</button>
     </div>
@@ -87,8 +89,7 @@
 
 <script>
 const DB_NAME = 'finances_v2';
-const STORES = ['transactions', 'accounts', 'categories', 'goals'];
-let syncInterval = null;
+const STORES = ['transactions', 'accounts'];
 
 const state = {
   currentView: 'dashboard',
@@ -174,40 +175,45 @@ async function loadTransactions() {
 async function syncFromBackend() {
   if (!state.backendUrl) return;
   try {
-    const res = await fetch(state.backendUrl + '/api/sync/' + state.userId);
-    if (!res.ok) return;
+    const url = state.backendUrl.endsWith('/') ? state.backendUrl : state.backendUrl + '/';
+    console.log('Synchro de:', url + 'api/sync/' + state.userId);
+    const res = await fetch(url + 'api/sync/' + state.userId, {timeout: 5000});
+    if (!res.ok) {
+      console.log('Erreur backend:', res.status);
+      return;
+    }
     const data = await res.json();
+    console.log('Backend retourne:', data.transactions ? data.transactions.length + ' TX' : '0 TX');
     
     if (data.transactions && data.transactions.length > 0) {
-      const localIds = new Set(state.transactions.map(t => t.id));
       for (const tx of data.transactions) {
         const txObj = {
           id: tx.id,
           date: tx.date,
-          description: tx.note || 'Transaction',
+          description: tx.note || tx.description || 'Transaction',
           amount: parseFloat(tx.amount),
           account: tx.accountId,
           type: tx.type,
           createdAt: tx.created_at
         };
-        if (!localIds.has(tx.id)) {
-          await dbPut('transactions', txObj);
-        }
+        await dbPut('transactions', txObj);
       }
       await loadTransactions();
       if (state.currentView === 'transactions' || state.currentView === 'dashboard') {
-        await renderView();
+        renderView();
       }
+      console.log('✓ Synchro OK: ' + data.transactions.length + ' transactions');
     }
   } catch (err) {
-    console.log('Synchro échouée');
+    console.log('Erreur synchro:', err.message);
   }
 }
 
 async function syncToBackend(tx) {
   if (!state.backendUrl) return;
   try {
-    await fetch(state.backendUrl + '/api/transaction', {
+    const url = state.backendUrl.endsWith('/') ? state.backendUrl : state.backendUrl + '/';
+    await fetch(url + 'api/transaction', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -222,172 +228,109 @@ async function syncToBackend(tx) {
         }
       })
     });
-  } catch (err) {}
+    console.log('✓ TX envoyée au backend');
+  } catch (err) {
+    console.log('Erreur upload TX:', err.message);
+  }
 }
 
-async function syncDeleteToBackend(txId) {
-  if (!state.backendUrl) return;
-  try {
-    await fetch(state.backendUrl + `/api/transaction/${state.userId}/${txId}`, {
-      method: 'DELETE'
-    });
-  } catch (err) {}
-}
-
-function startAutoSync() {
-  syncInterval = setInterval(syncFromBackend, 30000);
-}
-
-function go(view) {
+function goTo(view) {
   state.currentView = view;
-  updateNav();
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(view).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  event.target.closest('.nav-btn').classList.add('active');
   renderView();
 }
 
-function updateNav() {
-  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-  const views = ['dashboard', 'transactions', 'patrimoine', 'plan', 'settings'];
-  const idx = views.indexOf(view);
-  if (idx !== -1) {
-    document.querySelectorAll('.nav-item')[idx].classList.add('active');
-  }
-}
-
-async function renderView() {
-  if (state.currentView === 'dashboard') {
-    renderDashboard();
-  } else if (state.currentView === 'transactions') {
-    await renderTransactions();
-  } else if (state.currentView === 'patrimoine') {
-    renderPatrimoine();
-  } else if (state.currentView === 'plan') {
-    renderPlan();
-  } else if (state.currentView === 'settings') {
-    renderSettings();
-  }
-}
-
-function renderDashboard() {
-  const viewEl = document.getElementById('view');
-  const totalSoldes = state.accounts.reduce((sum, a) => sum + a.solde, 0);
-  const thisMonthTx = state.transactions.filter(t => {
-    const d = new Date(t.date);
-    return d.getMonth() === new Date().getMonth() && d.getFullYear() === new Date().getFullYear();
-  });
-  const income = thisMonthTx.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
-  const expenses = thisMonthTx.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
-
-  viewEl.innerHTML = `
-    <div class="view-header">
-      <div><div class="view-title">Vue d'ensemble</div><div class="view-sub">Tableau de bord</div></div>
-      <button class="btn btn-primary" onclick="openModal()">+ Transaction</button>
-    </div>
-    <div class="card">
-      <div class="card-title">Soldes</div>
-      <div style="padding:16px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
-        ${state.accounts.map(a => `<div><div style="color:var(--text-dim);font-size:11px">${a.name}</div><div style="font-size:16px;font-weight:700;margin-top:4px">${formatCurrency(a.solde)}</div></div>`).join('')}
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">Total patrimoine</div>
-      <div style="font-size:24px;font-weight:700;color:var(--success)">${formatCurrency(totalSoldes)}</div>
-    </div>
-    <div class="card">
-      <div class="card-title">Ce mois</div>
-      <div style="padding:12px 0">
-        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-          <span>Revenus</span>
-          <span style="color:var(--success);font-weight:600">+${formatCurrency(income)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between">
-          <span>Dépenses</span>
-          <span style="color:var(--danger);font-weight:600">-${formatCurrency(expenses)}</span>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-async function renderTransactions() {
-  const viewEl = document.getElementById('view');
-  await loadTransactions();
+function renderView() {
+  const viewEl = document.getElementById(state.currentView);
   
-  viewEl.innerHTML = `
-    <div class="view-header">
-      <div><div class="view-title">Transactions</div><div class="view-sub">Historique (${state.transactions.length})</div></div>
-      <button class="btn btn-primary" onclick="openModal()">+ Ajouter</button>
-    </div>
-    <div class="card">
-      <div class="card-title">Dernières transactions</div>
-      <div style="padding:12px 0">
-        ${state.transactions.length === 0 ? '<div style="color:var(--text-dim)">Aucune transaction</div>' : state.transactions.slice(0, 20).map(t => `
-          <div class="tx-row">
-            <div class="tx-date">${t.date}</div>
-            <div class="tx-desc">${t.description}</div>
-            <div class="tx-amount ${t.type === 'income' ? 'pos' : 'neg'}">${(t.type === 'income' ? '+' : '-')}${formatCurrency(Math.abs(t.amount))}</div>
-            <button class="btn btn-sm btn-danger" onclick="deleteTx('${t.id}')" style="margin-left:8px">✕</button>
-          </div>
-        `).join('')}
+  if (state.currentView === 'dashboard') {
+    const totalSoldes = state.accounts.reduce((sum, a) => sum + a.solde, 0);
+    const thisMonthTx = state.transactions.filter(t => {
+      const d = new Date(t.date);
+      return d.getMonth() === new Date().getMonth() && d.getFullYear() === new Date().getFullYear();
+    });
+    const income = thisMonthTx.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
+    const expenses = thisMonthTx.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+    
+    viewEl.innerHTML = `
+      <div style="margin-bottom:12px"><button class="btn btn-primary" onclick="openModal()">+ Transaction</button></div>
+      <div class="card">
+        <div class="card-title">Soldes</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          ${state.accounts.slice(0, 4).map(a => `<div><div style="color:var(--text-dim);font-size:10px">${a.name}</div><div style="font-size:14px;font-weight:700;margin-top:2px">${formatCurrency(a.solde)}</div></div>`).join('')}
+        </div>
       </div>
-      <div class="sync-status">🔄 Synchro auto ${state.backendUrl ? '✓ active' : '✗ désactivée'}</div>
-    </div>
-  `;
-}
-
-function renderPatrimoine() {
-  const viewEl = document.getElementById('view');
-  viewEl.innerHTML = `
-    <div class="view-header"><div class="view-title">Patrimoine</div></div>
-    <div class="card">
-      <div class="card-title">Comptes et actifs</div>
-      <div style="padding:12px 0">
-        ${state.accounts.map(a => `<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px"><span>${a.name}</span><span style="font-weight:600">${formatCurrency(a.solde)}</span></div>`).join('')}
+      <div class="card">
+        <div class="card-title">Total</div>
+        <div style="font-size:20px;font-weight:700;color:var(--success)">${formatCurrency(totalSoldes)}</div>
       </div>
-    </div>
-  `;
-}
-
-function renderPlan() {
-  const viewEl = document.getElementById('view');
-  viewEl.innerHTML = `
-    <div class="view-header"><div class="view-title">Plan d'action</div></div>
-    <div class="card">
-      <div class="card-title">Phases</div>
-      <div style="padding:12px 0;font-size:14px">
-        <div style="margin-bottom:16px"><div style="font-weight:600">Phase 1 : Alternance</div><div style="color:var(--text-dim);font-size:12px">Juillet-septembre 2026</div></div>
-        <div style="margin-bottom:16px"><div style="font-weight:600">Phase 2 : ARE + AFPA</div><div style="color:var(--text-dim);font-size:12px">Octobre 2026 - Mars 2028</div></div>
-        <div><div style="font-weight:600">Phase 3 : Auto-entrepreneur</div><div style="color:var(--text-dim);font-size:12px">Mars 2028+</div></div>
+      <div class="card">
+        <div class="card-title">Ce mois</div>
+        <div><span style="color:var(--success)">↑ ${formatCurrency(income)}</span> · <span style="color:var(--danger)">↓ ${formatCurrency(expenses)}</span></div>
       </div>
-    </div>
-  `;
-}
-
-function renderSettings() {
-  const viewEl = document.getElementById('view');
-  viewEl.innerHTML = `
-    <div class="view-header"><div class="view-title">Paramètres</div></div>
-    <div class="card">
-      <div class="card-title">Backend & Synchronisation</div>
-      <div style="padding:12px 0">
+    `;
+  } else if (state.currentView === 'transactions') {
+    viewEl.innerHTML = `
+      <div style="margin-bottom:12px"><button class="btn btn-primary" onclick="openModal()">+ TX</button></div>
+      <div class="card">
+        <div class="card-title">Historique (${state.transactions.length})</div>
+        <div>
+          ${state.transactions.length === 0 ? '<div style="color:var(--text-dim);font-size:12px">Aucune TX</div>' : state.transactions.slice(0, 30).map(t => `
+            <div class="tx-row">
+              <div class="tx-date">${t.date}</div>
+              <div class="tx-desc">${t.description}</div>
+              <div class="tx-amount ${t.type === 'income' ? 'pos' : 'neg'}">${(t.type === 'income' ? '+' : '-')}${formatCurrency(Math.abs(t.amount))}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="sync-badge">🔄 ${state.backendUrl ? 'Synchro active' : 'Local'}</div>
+      </div>
+    `;
+  } else if (state.currentView === 'patrimoine') {
+    viewEl.innerHTML = `
+      <div class="card">
+        <div class="card-title">Comptes</div>
+        ${state.accounts.map(a => `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px"><span>${a.name}</span><span style="font-weight:600">${formatCurrency(a.solde)}</span></div>`).join('')}
+      </div>
+    `;
+  } else if (state.currentView === 'plan') {
+    viewEl.innerHTML = `
+      <div class="card">
+        <div class="card-title">Phases</div>
+        <div style="font-size:13px">
+          <div style="margin-bottom:12px"><div style="font-weight:600">Phase 1</div><div style="color:var(--text-dim);font-size:11px">Alternance (juil-sept 2026)</div></div>
+          <div style="margin-bottom:12px"><div style="font-weight:600">Phase 2</div><div style="color:var(--text-dim);font-size:11px">ARE + AFPA (oct 2026 - mar 2028)</div></div>
+          <div><div style="font-weight:600">Phase 3</div><div style="color:var(--text-dim);font-size:11px">Auto-entrepreneur (mar 2028+)</div></div>
+        </div>
+      </div>
+    `;
+  } else if (state.currentView === 'settings') {
+    viewEl.innerHTML = `
+      <div class="card">
+        <div class="card-title">Backend</div>
         <div class="input-group">
-          <label class="input-label">URL du backend</label>
+          <label class="input-label">URL</label>
           <input type="text" id="backendUrl" value="${state.backendUrl}" class="input-field" placeholder="https://...">
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-primary btn-sm" onclick="saveBackendUrl()">Enregistrer</button>
           <button class="btn btn-primary btn-sm" onclick="testBackendConnection()">Tester</button>
+          <button class="btn btn-primary btn-sm" onclick="syncFromBackend()">Recharger</button>
         </div>
       </div>
-    </div>
-    <div class="card">
-      <div class="card-title">Informations</div>
-      <div style="padding:12px 0;font-size:12px;color:var(--text-dim)">
-        <div style="margin-bottom:8px;word-break:break-all"><strong>User ID:</strong> ${state.userId}</div>
-        <div><strong>Backend:</strong> ${state.backendUrl || '(non configuré)'}</div>
-        <div style="margin-top:8px;color:var(--text-faint)">🔄 Synchro auto: toutes les 30 sec</div>
+      <div class="card">
+        <div class="card-title">Info</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.6">
+          <div><strong>ID:</strong> ${state.userId.slice(0, 8)}...</div>
+          <div><strong>Backend:</strong> ${state.backendUrl ? '✓ Configuré' : '✗ Non'}</div>
+          <div><strong>TX locales:</strong> ${state.transactions.length}</div>
+        </div>
       </div>
-    </div>
-  `;
+    `;
+  }
 }
 
 function openModal() {
@@ -440,15 +383,8 @@ async function saveTx() {
   }
 
   closeModal();
-  await renderTransactions();
-}
-
-async function deleteTx(txId) {
-  if (!confirm('Supprimer cette transaction ?')) return;
-  await dbDelete('transactions', txId);
-  await syncDeleteToBackend(txId);
   await loadTransactions();
-  await renderView();
+  renderView();
 }
 
 function saveBackendUrl() {
@@ -460,24 +396,28 @@ function saveBackendUrl() {
 
 async function testBackendConnection() {
   if (!state.backendUrl) {
-    alert('Configure l\'URL du backend d\'abord');
+    alert('Configure l\'URL d\'abord');
     return;
   }
   try {
-    const res = await fetch(state.backendUrl + '/health');
-    const data = await res.json();
-    alert('✓ Connexion réussie!');
+    const url = state.backendUrl.endsWith('/') ? state.backendUrl : state.backendUrl + '/';
+    const res = await fetch(url + 'health', {timeout: 5000});
+    if (res.ok) {
+      alert('✓ Connexion réussie!');
+    } else {
+      alert('✗ Erreur ' + res.status);
+    }
   } catch (err) {
     alert('✗ Erreur:\n' + err.message);
   }
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
-  await syncFromBackend();
   await loadTransactions();
-  startAutoSync();
-  go('dashboard');
-  console.log('✓ Synchro auto activée (30 sec)');
+  await syncFromBackend();
+  setInterval(syncFromBackend, 30000);
+  renderView();
+  console.log('✓ App mobile chargée');
 });
 
 document.addEventListener('visibilitychange', function() {
