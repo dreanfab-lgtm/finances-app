@@ -1,0 +1,27 @@
+{
+  "name": "Finances — Tableau de bord",
+  "short_name": "Finances",
+  "description": "Tableau de bord financier personnel — recettes, dépenses, épargne, objectifs",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F1117",
+  "theme_color": "#0F1117",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='42' fill='%230F1117'/><path d='M54 134V58h34c19 0 30 11 30 27 0 11-6 19-15 23l21 26h-22l-17-23h-8v23H54zm22-42h12c6 0 9-4 9-9 0-6-3-10-9-10H76v19z' fill='%234F8EF7'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='112' fill='%230F1117'/><path d='M144 358V154h91c51 0 80 30 80 71 0 30-16 51-40 61l56 72h-59l-46-62h-21v62h-61zm61-112h32c16 0 24-10 24-25 0-15-8-25-24-25h-32v50z' fill='%234F8EF7'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "productivity"]
+}
