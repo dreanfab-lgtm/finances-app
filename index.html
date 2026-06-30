@@ -88,6 +88,8 @@
 <script>
 const DB_NAME = 'finances_v2';
 const STORES = ['transactions', 'accounts', 'categories', 'goals'];
+let syncInterval = null;
+
 const state = {
   currentView: 'dashboard',
   backendUrl: localStorage.getItem('finances_backend_url') || '',
@@ -170,19 +172,16 @@ async function loadTransactions() {
 }
 
 async function syncFromBackend() {
-  if (!state.backendUrl) {
-    console.log('Backend non configuré, chargement local');
-    return;
-  }
+  if (!state.backendUrl) return;
   try {
-    console.log('Synchro depuis backend...');
     const res = await fetch(state.backendUrl + '/api/sync/' + state.userId);
-    if (!res.ok) throw new Error('Erreur ' + res.status);
+    if (!res.ok) return;
     const data = await res.json();
     
     if (data.transactions && data.transactions.length > 0) {
+      const localIds = new Set(state.transactions.map(t => t.id));
       for (const tx of data.transactions) {
-        await dbPut('transactions', {
+        const txObj = {
           id: tx.id,
           date: tx.date,
           description: tx.note || 'Transaction',
@@ -190,12 +189,18 @@ async function syncFromBackend() {
           account: tx.accountId,
           type: tx.type,
           createdAt: tx.created_at
-        });
+        };
+        if (!localIds.has(tx.id)) {
+          await dbPut('transactions', txObj);
+        }
       }
-      console.log('✓ ' + data.transactions.length + ' transactions synchro');
+      await loadTransactions();
+      if (state.currentView === 'transactions' || state.currentView === 'dashboard') {
+        await renderView();
+      }
     }
   } catch (err) {
-    console.log('Synchro échouée:', err.message);
+    console.log('Synchro échouée');
   }
 }
 
@@ -217,10 +222,7 @@ async function syncToBackend(tx) {
         }
       })
     });
-    console.log('✓ Synchro backend OK');
-  } catch (err) {
-    console.log('✗ Synchro échouée:', err.message);
-  }
+  } catch (err) {}
 }
 
 async function syncDeleteToBackend(txId) {
@@ -229,10 +231,11 @@ async function syncDeleteToBackend(txId) {
     await fetch(state.backendUrl + `/api/transaction/${state.userId}/${txId}`, {
       method: 'DELETE'
     });
-    console.log('✓ Suppression synchro OK');
-  } catch (err) {
-    console.log('✗ Suppression échouée:', err.message);
-  }
+  } catch (err) {}
+}
+
+function startAutoSync() {
+  syncInterval = setInterval(syncFromBackend, 30000);
 }
 
 function go(view) {
@@ -326,7 +329,7 @@ async function renderTransactions() {
           </div>
         `).join('')}
       </div>
-      <div class="sync-status">🔄 Synchro ${state.backendUrl ? '✓ active' : '✗ désactivée'}</div>
+      <div class="sync-status">🔄 Synchro auto ${state.backendUrl ? '✓ active' : '✗ désactivée'}</div>
     </div>
   `;
 }
@@ -373,7 +376,6 @@ function renderSettings() {
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-primary btn-sm" onclick="saveBackendUrl()">Enregistrer</button>
           <button class="btn btn-primary btn-sm" onclick="testBackendConnection()">Tester</button>
-          <button class="btn btn-primary btn-sm" onclick="syncFromBackendNow()">Recharger</button>
         </div>
       </div>
     </div>
@@ -382,6 +384,7 @@ function renderSettings() {
       <div style="padding:12px 0;font-size:12px;color:var(--text-dim)">
         <div style="margin-bottom:8px;word-break:break-all"><strong>User ID:</strong> ${state.userId}</div>
         <div><strong>Backend:</strong> ${state.backendUrl || '(non configuré)'}</div>
+        <div style="margin-top:8px;color:var(--text-faint)">🔄 Synchro auto: toutes les 30 sec</div>
       </div>
     </div>
   `;
@@ -438,7 +441,6 @@ async function saveTx() {
 
   closeModal();
   await renderTransactions();
-  alert('✓ Synchro réussie');
 }
 
 async function deleteTx(txId) {
@@ -470,18 +472,18 @@ async function testBackendConnection() {
   }
 }
 
-async function syncFromBackendNow() {
-  await syncFromBackend();
-  await loadTransactions();
-  await renderView();
-  alert('✓ Données rechargées du backend');
-}
-
 document.addEventListener('DOMContentLoaded', async function() {
   await syncFromBackend();
   await loadTransactions();
+  startAutoSync();
   go('dashboard');
-  console.log('✓ App chargée avec synchro complète');
+  console.log('✓ Synchro auto activée (30 sec)');
+});
+
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'visible') {
+    syncFromBackend();
+  }
 });
 
 document.getElementById('txModal').onclick = (e) => {
